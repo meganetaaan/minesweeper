@@ -6,5 +6,5 @@ Yet another minesweeper engine for node.js
 # Installation
 
 ```
-$ npm install minesweeper
+$ npm install minesweeper-engine
 ```

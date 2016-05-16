@@ -1,2 +1,1 @@
-const MineSweeper = require('./lib/MineSweeper');
-module.exports = MineSweeper;
+module.exports = require('./lib/MineSweeper');

@@ -12,9 +12,18 @@
   }
 
   // private property
-  let mineState;
+  const privateMap = new WeakMap();
 
   // private function
+  function getPrivates(self) {
+    let p = privateMap.get(self);
+    if(!p) {
+      p = {};
+      privateMap.set(self, p);
+    }
+    return p;
+  }
+
   function getRandomInt(min, max) {
     return min + Math.floor(Math.random() * (max - min))
   }
@@ -46,11 +55,13 @@
 
       //TODO: define Field class to concealing the mine position,
       // lazy evaluation and row/col validation.
-      mineState = this.createMineField(rowNum, colNum, mineNum);
       this.openState = this.createOpenField(rowNum, colNum);
       this.rowNum = rowNum;
       this.colNum = colNum;
       this.mineNum = mineNum;
+
+      getPrivates(this).mineState = this.createMineField(rowNum, colNum, mineNum);
+      getPrivates(this).isCaboomed = false;
     };
 
     createMineField(rowNum, colNum, mineNum) {
@@ -92,6 +103,13 @@
     }
 
     open(row, col) {
+      if(getPrivates(this).isCaboomed){
+        return {
+          status: STATUS.ERROR,
+          message: 'already caboomed',
+          field: this.getAllField()
+        };
+      }
       if (row < 0 || row >= this.rowNum || col < 0 || col >= this.colNum) {
         return {
           status: STATUS.ERROR,
@@ -111,9 +129,10 @@
       const ms = this.getMineState(row, col);
       if (ms === -1) {
         // TODO: make it Game-Over. Would be better to do it by a wrapper of this class.
+        getPrivates(this).isCaboomed = true;
         return {
           status: STATUS.CABOOM,
-          field: this.openAllField()
+          field: this.getAllField()
         };
       } else {
         if (ms === 0) {
@@ -131,6 +150,7 @@
     };
 
     getMineState(row, col) {
+      const mineState = getPrivates(this).mineState;
       const state = mineState[row][col];
       if (state !== null) {
         return state;
@@ -152,15 +172,15 @@
     }
 
     getField() {
-      return mineState.map((arr) => {
+      return getPrivates(this).mineState.map((arr) => {
         return arr.map((val) => {
           return val === -1 ? null : val
         })
       });
     }
 
-    openAllField() {
-      return mineState;
+    getAllField() {
+      return getPrivates(this).mineState;
     }
   };
 

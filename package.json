@@ -1,11 +1,12 @@
 {
   "name": "minesweeper-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Yet another minesweeper engine for node.js",
   "repository": "git://github.com/meganetaaan/minesweeper-engine.git",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require intelli-espower-loader test/*.js"
+    "test": "mocha --require intelli-espower-loader test/*.js",
+    "build": "babel src --presets es2015 --out-dir lib"
   },
   "keywords": [],
   "author": "Shinya Ishikawa",

@@ -11,6 +11,6 @@ Yet another minesweeper engine for node.js
 $ npm install minesweeper-engine
 ```
 
-# Demos using powered by this engine
+# Demos powered by this engine
 
 [Minesweeper Standalone](https://meganetaaan.github.io/minesweeper-standalone/)

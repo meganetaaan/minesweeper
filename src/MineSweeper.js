@@ -8,7 +8,8 @@
   const STATUS = {
     OK: 'OK',
     ERROR: 'ERROR',
-    CABOOM: 'CABOOM'
+    CABOOM: 'CABOOM',
+    CLEARED: 'CLEARED'
   }
 
   // private property
@@ -62,6 +63,7 @@
 
       getPrivates(this).mineState = this.createMineField(rowNum, colNum, mineNum);
       getPrivates(this).isCaboomed = false;
+      getPrivates(this).isCleared = false;
     };
 
     createMineField(rowNum, colNum, mineNum) {
@@ -103,6 +105,13 @@
     }
 
     open(row, col) {
+      if(getPrivates(this).isCleared){
+        return {
+          status: STATUS.ERROR,
+          message: 'already cleared',
+          field: this.getAllField()
+        };
+      }
       if(getPrivates(this).isCaboomed){
         return {
           status: STATUS.ERROR,
@@ -142,8 +151,15 @@
             }
           }
         }
+        const status =
+          this.getRemainingCellNum() === this.mineNum
+          ? STATUS.CLEARED
+          : STATUS.OK;
+        if(status === STATUS.CLEARED){
+          getPrivates(this).isCleared = true;
+        }
         return {
-          status: STATUS.OK,
+          status: status,
           field: this.getField()
         };
       }
@@ -181,6 +197,17 @@
 
     getAllField() {
       return getPrivates(this).mineState;
+    }
+
+    getRemainingCellNum() {
+      let result = 0;
+      for(let i = 0; i < this.rowNum; i++){
+        for(let j = 0; j < this.colNum; j++){
+          result += !this.openState[i][j];
+        }
+      }
+      console.log('getRemainingCellNum: ' + result);
+      return result;
     }
   };
 

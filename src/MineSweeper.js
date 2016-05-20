@@ -206,7 +206,6 @@
           result += !this.openState[i][j];
         }
       }
-      console.log('getRemainingCellNum: ' + result);
       return result;
     }
   };

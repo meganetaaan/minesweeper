@@ -1,6 +1,6 @@
 {
   "name": "minesweeper-engine",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Yet another minesweeper engine for node.js",
   "repository": "git://github.com/meganetaaan/minesweeper-engine.git",
   "main": "index.js",
